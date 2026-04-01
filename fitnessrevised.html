@@ -1,0 +1,882 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>RAISE AND REP — Start Today, Shape Your Body</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://unpkg.com/lucide@latest"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet" />
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          fontFamily: { sans: ['Inter', 'sans-serif'] },
+          keyframes: {
+            fadeUp: {
+              '0%': { opacity: '0', transform: 'translateY(30px)' },
+              '100%': { opacity: '1', transform: 'translateY(0)' }
+            },
+            fadeIn: { '0%': { opacity: '0' }, '100%': { opacity: '1' } },
+            scroll: { '0%': { transform: 'translateX(0)' }, '100%': { transform: 'translateX(-50%)' } },
+            float: { '0%, 100%': { transform: 'translateY(0px)' }, '50%': { transform: 'translateY(-12px)' } },
+            pulse2: { '0%, 100%': { opacity: '0.3' }, '50%': { opacity: '0.7' } },
+            countUp: { '0%': { opacity: '0', transform: 'scale(0.5)' }, '100%': { opacity: '1', transform: 'scale(1)' } },
+            shimmer: {
+              '0%': { backgroundPosition: '-200% 0' },
+              '100%': { backgroundPosition: '200% 0' }
+            },
+            fillGauge: {
+              '0%': { strokeDashoffset: '283' },
+              '100%': { strokeDashoffset: 'var(--target-offset)' }
+            }
+          },
+          animation: {
+            'fade-up': 'fadeUp 0.8s ease-out forwards',
+            'fade-up-d1': 'fadeUp 0.8s ease-out 0.15s forwards',
+            'fade-up-d2': 'fadeUp 0.8s ease-out 0.3s forwards',
+            'fade-up-d3': 'fadeUp 0.8s ease-out 0.45s forwards',
+            'fade-up-d4': 'fadeUp 0.8s ease-out 0.6s forwards',
+            'fade-in': 'fadeIn 1s ease-out forwards',
+            'scroll': 'scroll 25s linear infinite',
+            'float': 'float 6s ease-in-out infinite',
+            'pulse2': 'pulse2 4s ease-in-out infinite',
+            'count-up': 'countUp 0.6s ease-out forwards',
+            'shimmer': 'shimmer 3s linear infinite',
+            'fill-gauge': 'fillGauge 1.2s ease-out forwards'
+          }
+        }
+      }
+    }
+  </script>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body { background: #050505; color: #fff; font-family: 'Inter', sans-serif; overflow-x: hidden; }
+
+    .hero-bg {
+      background:
+        radial-gradient(ellipse 80% 50% at 50% 0%, rgba(34,197,94,0.12) 0%, transparent 60%),
+        radial-gradient(ellipse 40% 40% at 20% 80%, rgba(22,163,74,0.06) 0%, transparent 50%),
+        radial-gradient(ellipse 40% 40% at 80% 60%, rgba(22,163,74,0.04) 0%, transparent 50%);
+    }
+
+    .text-gradient {
+      background: linear-gradient(135deg, #22c55e, #16a34a, #15803d);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    .text-gradient-gold {
+      background: linear-gradient(135deg, #facc15, #f59e0b, #d97706);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    .card-hover {
+      transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+    .card-hover:hover {
+      border-color: rgba(34,197,94,0.2);
+      transform: translateY(-6px);
+      box-shadow: 0 25px 50px -15px rgba(0,0,0,0.5), 0 0 30px -10px rgba(34,197,94,0.1);
+    }
+
+    .nav-blur {
+      backdrop-filter: blur(24px);
+      -webkit-backdrop-filter: blur(24px);
+    }
+
+    .marquee-mask {
+      mask-image: linear-gradient(to right, transparent, black 10%, black 90%, transparent);
+      -webkit-mask-image: linear-gradient(to right, transparent, black 10%, black 90%, transparent);
+    }
+
+    .offer-shimmer {
+      background: linear-gradient(90deg, transparent 0%, rgba(250,204,21,0.08) 50%, transparent 100%);
+      background-size: 200% 100%;
+      animation: shimmer 3s linear infinite;
+    }
+
+    .program-card::after {
+      content: '';
+      position: absolute;
+      bottom: 0; left: 0; right: 0;
+      height: 3px;
+      background: linear-gradient(90deg, #22c55e, #16a34a);
+      transform: scaleX(0);
+      transition: transform 0.5s ease;
+      border-radius: 0 0 16px 16px;
+    }
+    .program-card:hover::after { transform: scaleX(1); }
+
+    .btn-primary {
+      background: linear-gradient(135deg, #22c55e, #16a34a);
+      box-shadow: 0 8px 25px -8px rgba(34,197,94,0.4);
+      transition: all 0.3s ease;
+    }
+    .btn-primary:hover {
+      box-shadow: 0 12px 35px -8px rgba(34,197,94,0.5);
+      transform: translateY(-2px);
+    }
+
+    .observer-hidden { opacity: 0; transform: translateY(30px); }
+    .observer-visible { opacity: 1; transform: translateY(0); transition: all 0.8s ease-out; }
+
+    .logo-glow { filter: drop-shadow(0 0 20px rgba(34,197,94,0.3)); }
+
+    ::-webkit-scrollbar { width: 6px; }
+    ::-webkit-scrollbar-track { background: #0a0a0a; }
+    ::-webkit-scrollbar-thumb { background: #1a1a1a; border-radius: 3px; }
+    ::-webkit-scrollbar-thumb:hover { background: #333; }
+
+    .brick-texture {
+      background-image:
+        linear-gradient(to right, rgba(255,255,255,0.02) 1px, transparent 1px),
+        linear-gradient(to bottom, rgba(255,255,255,0.02) 1px, transparent 1px),
+        linear-gradient(to right, rgba(255,255,255,0.01) 2px, transparent 2px),
+        linear-gradient(to bottom, rgba(255,255,255,0.01) 2px, transparent 2px);
+      background-size: 60px 30px, 60px 30px, 120px 60px, 120px 60px;
+      background-position: 0 0, 0 15px, 30px 0, 30px 15px;
+    }
+
+    .calc-input {
+      background: rgba(23,23,23,0.8);
+      border: 1px solid rgba(255,255,255,0.06);
+      transition: all 0.3s ease;
+    }
+    .calc-input:focus {
+      outline: none;
+      border-color: rgba(34,197,94,0.35);
+      box-shadow: 0 0 0 3px rgba(34,197,94,0.08);
+    }
+
+    .radio-option {
+      transition: all 0.2s ease;
+      cursor: pointer;
+    }
+    .radio-option:has(input:checked) {
+      border-color: rgba(34,197,94,0.5);
+      background: rgba(34,197,94,0.08);
+    }
+    .radio-option:has(input:checked) .radio-dot {
+      background: #22c55e;
+      box-shadow: 0 0 8px rgba(34,197,94,0.5);
+    }
+
+    .bmi-gauge-track { stroke: rgba(255,255,255,0.05); }
+    .bmi-gauge-fill { transition: stroke-dashoffset 1.2s ease-out, stroke 0.5s ease; }
+
+    .result-panel {
+      max-height: 0;
+      overflow: hidden;
+      opacity: 0;
+      transition: max-height 0.6s ease, opacity 0.4s ease, margin 0.4s ease;
+    }
+    .result-panel.show {
+      max-height: 500px;
+      opacity: 1;
+      margin-top: 1.5rem;
+    }
+
+    .bmi-bar {
+      height: 8px;
+      border-radius: 999px;
+      background: linear-gradient(90deg, #22c55e 0%, #22c55e 25%, #facc15 25%, #facc15 50%, #f97316 50%, #f97316 75%, #ef4444 75%, #ef4444 100%);
+    }
+    .bmi-marker {
+      width: 4px;
+      height: 16px;
+      background: #fff;
+      border-radius: 2px;
+      position: absolute;
+      top: -4px;
+      transition: left 0.8s ease;
+      box-shadow: 0 0 8px rgba(255,255,255,0.5);
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ========== NAVIGATION ========== -->
+  <nav class="fixed top-0 left-0 right-0 z-50 nav-blur bg-[#050505]/80 border-b border-white/5">
+    <div class="max-w-7xl mx-auto px-6 h-16 flex items-center justify-between">
+      <a href="#hero" class="flex items-center gap-3">
+        <img src="https://z-cdn-media.chatglm.cn/files/198de31a-56c5-4fcc-89bc-9503590dfd6b.png?auth_key=1875040675-c5451e1efb164813b0068e78b15112ec-0-aac451e069bd805be81a03067b1988c7" alt="Raise and Rep Logo" class="h-9 w-auto logo-glow rounded" />
+        <span class="text-lg font-bold tracking-tight hidden sm:block">
+          <span class="text-gradient">RAISE</span> <span class="text-neutral-400">&</span> <span class="text-gradient">REP</span>
+        </span>
+      </a>
+      <div class="hidden md:flex items-center gap-8">
+        <a href="#programs" class="text-sm text-neutral-400 hover:text-white transition-colors duration-300">Programs</a>
+        <a href="#calculators" class="text-sm text-neutral-400 hover:text-white transition-colors duration-300">Calculators</a>
+        <a href="#why-us" class="text-sm text-neutral-400 hover:text-white transition-colors duration-300">Why Us</a>
+        <a href="#offer" class="text-sm text-neutral-400 hover:text-white transition-colors duration-300">Offer</a>
+        <a href="#register" class="text-sm font-medium btn-primary text-black px-5 py-2 rounded-full">Register Now</a>
+      </div>
+      <button id="mobileMenuBtn" class="md:hidden text-neutral-400 hover:text-white transition-colors">
+        <i data-lucide="menu" class="w-5 h-5"></i>
+      </button>
+    </div>
+    <div id="mobileMenu" class="hidden md:hidden border-t border-white/5 bg-[#0a0a0a]/95 nav-blur">
+      <div class="px-6 py-4 flex flex-col gap-4">
+        <a href="#programs" class="text-sm text-neutral-400 hover:text-white transition-colors mobile-link">Programs</a>
+        <a href="#calculators" class="text-sm text-neutral-400 hover:text-white transition-colors mobile-link">Calculators</a>
+        <a href="#why-us" class="text-sm text-neutral-400 hover:text-white transition-colors mobile-link">Why Us</a>
+        <a href="#offer" class="text-sm text-neutral-400 hover:text-white transition-colors mobile-link">Offer</a>
+        <a href="#register" class="text-sm font-medium btn-primary text-black px-5 py-2.5 rounded-full text-center mobile-link">Register Now</a>
+      </div>
+    </div>
+  </nav>
+
+  <!-- ========== HERO ========== -->
+  <section id="hero" class="min-h-screen hero-bg relative flex items-center pt-16">
+    <div class="absolute top-32 left-10 w-80 h-80 bg-green-600/8 rounded-full blur-[120px] animate-pulse2"></div>
+    <div class="absolute bottom-10 right-10 w-96 h-96 bg-green-700/6 rounded-full blur-[120px] animate-pulse2" style="animation-delay:2s;"></div>
+    <div class="max-w-7xl mx-auto px-6 w-full grid lg:grid-cols-2 gap-12 items-center py-20">
+      <div class="flex flex-col gap-6">
+        <div class="opacity-0 animate-fade-up">
+          <span class="inline-flex items-center gap-2 text-xs font-semibold tracking-widest uppercase text-green-400/80 bg-green-500/10 border border-green-500/20 rounded-full px-4 py-2">
+            <span class="w-2 h-2 bg-green-500 rounded-full animate-pulse"></span>
+            Online Fitness Coaching
+          </span>
+        </div>
+        <h1 class="text-5xl md:text-7xl lg:text-8xl font-black leading-[0.85] tracking-tighter opacity-0 animate-fade-up-d1">
+          <span class="text-gradient">RAISE</span><br/>
+          <span class="text-white">AND</span><br/>
+          <span class="text-gradient">REP</span>
+        </h1>
+        <p class="text-lg md:text-xl font-light text-neutral-400 leading-relaxed max-w-lg opacity-0 animate-fade-up-d2">
+          Start today — shape your body with us. Join our online fitness coaching & training programs designed to transform your life.
+        </p>
+        <div class="flex flex-wrap gap-4 opacity-0 animate-fade-up-d3">
+          <a href="#register" class="inline-flex items-center gap-2 btn-primary text-black text-sm font-bold px-8 py-4 rounded-full uppercase tracking-wide">
+            Register Now <i data-lucide="arrow-right" class="w-4 h-4"></i>
+          </a>
+          <a href="#calculators" class="inline-flex items-center gap-2 text-sm font-medium text-neutral-300 border border-white/10 px-8 py-4 rounded-full hover:border-green-500/30 hover:text-white transition-all duration-300 uppercase tracking-wide">
+            Check Your BMI
+          </a>
+        </div>
+        <div class="flex gap-8 mt-4 opacity-0 animate-fade-up-d4">
+          <div><div class="text-2xl font-bold text-gradient">50+</div><div class="text-xs text-neutral-600 mt-1">Spots Left</div></div>
+          <div class="w-px bg-white/10"></div>
+          <div><div class="text-2xl font-bold text-gradient">50%</div><div class="text-xs text-neutral-600 mt-1">Discount</div></div>
+          <div class="w-px bg-white/10"></div>
+          <div><div class="text-2xl font-bold text-gradient">4</div><div class="text-xs text-neutral-600 mt-1">Programs</div></div>
+        </div>
+      </div>
+      <div class="flex justify-center opacity-0 animate-fade-up-d2">
+        <div class="relative">
+          <div class="absolute -inset-4 bg-green-500/10 rounded-3xl blur-[40px]"></div>
+          <img src="https://z-cdn-media.chatglm.cn/files/198de31a-56c5-4fcc-89bc-9503590dfd6b.png?auth_key=1875040675-c5451e1efb164813b0068e78b15112ec-0-aac451e069bd805be81a03067b1988c7" alt="Raise and Rep Fitness Logo" class="relative w-full max-w-md rounded-2xl shadow-2xl shadow-black/50 animate-float logo-glow" />
+        </div>
+      </div>
+    </div>
+    <div class="absolute bottom-8 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2 opacity-0 animate-fade-in" style="animation-delay:1.5s;">
+      <span class="text-xs text-neutral-600 tracking-widest uppercase">Scroll</span>
+      <div class="w-5 h-8 border border-neutral-700 rounded-full flex justify-center pt-1.5">
+        <div class="w-1 h-2 bg-green-500/70 rounded-full animate-bounce"></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ========== MARQUEE ========== -->
+  <div class="py-6 border-y border-white/5 overflow-hidden marquee-mask bg-[#030303]">
+    <div class="flex animate-scroll whitespace-nowrap">
+      <span class="mx-10 text-sm text-neutral-700 font-bold tracking-widest uppercase">Weight Loss</span><span class="mx-4 text-green-600">✦</span>
+      <span class="mx-10 text-sm text-neutral-700 font-bold tracking-widest uppercase">Weight Gain</span><span class="mx-4 text-green-600">✦</span>
+      <span class="mx-10 text-sm text-neutral-700 font-bold tracking-widest uppercase">Fat Loss</span><span class="mx-4 text-green-600">✦</span>
+      <span class="mx-10 text-sm text-neutral-700 font-bold tracking-widest uppercase">Muscle Building</span><span class="mx-4 text-green-600">✦</span>
+      <span class="mx-10 text-sm text-neutral-700 font-bold tracking-widest uppercase">Online Coaching</span><span class="mx-4 text-green-600">✦</span>
+      <span class="mx-10 text-sm text-neutral-700 font-bold tracking-widest uppercase">Personal Training</span><span class="mx-4 text-green-600">✦</span>
+      <span class="mx-10 text-sm text-neutral-700 font-bold tracking-widest uppercase">Raise And Rep</span><span class="mx-4 text-green-600">✦</span>
+      <span class="mx-10 text-sm text-neutral-700 font-bold tracking-widest uppercase">Weight Loss</span><span class="mx-4 text-green-600">✦</span>
+      <span class="mx-10 text-sm text-neutral-700 font-bold tracking-widest uppercase">Weight Gain</span><span class="mx-4 text-green-600">✦</span>
+      <span class="mx-10 text-sm text-neutral-700 font-bold tracking-widest uppercase">Fat Loss</span><span class="mx-4 text-green-600">✦</span>
+      <span class="mx-10 text-sm text-neutral-700 font-bold tracking-widest uppercase">Muscle Building</span><span class="mx-4 text-green-600">✦</span>
+      <span class="mx-10 text-sm text-neutral-700 font-bold tracking-widest uppercase">Online Coaching</span><span class="mx-4 text-green-600">✦</span>
+      <span class="mx-10 text-sm text-neutral-700 font-bold tracking-widest uppercase">Personal Training</span><span class="mx-4 text-green-600">✦</span>
+      <span class="mx-10 text-sm text-neutral-700 font-bold tracking-widest uppercase">Raise And Rep</span><span class="mx-4 text-green-600">✦</span>
+    </div>
+  </div>
+
+  <!-- ========== PROGRAMS ========== -->
+  <section id="programs" class="py-32 relative">
+    <div class="max-w-7xl mx-auto px-6">
+      <div class="text-center mb-16 observer-hidden" data-observe>
+        <span class="text-xs font-semibold tracking-widest uppercase text-green-500/70">Our Programs</span>
+        <h2 class="text-3xl md:text-5xl font-bold tracking-tight mt-4">Choose Your <span class="text-gradient">Best Fit</span></h2>
+        <p class="text-base font-light text-neutral-500 mt-4 max-w-xl mx-auto">Join today and select the program that aligns with your fitness goals.</p>
+      </div>
+      <div class="grid sm:grid-cols-2 lg:grid-cols-4 gap-6">
+        <div class="program-card relative bg-neutral-900/40 border border-white/5 rounded-2xl p-7 card-hover observer-hidden overflow-hidden" data-observe>
+          <div class="relative z-10">
+            <div class="w-14 h-14 rounded-2xl bg-green-600/10 border border-green-500/20 flex items-center justify-center mb-6"><i data-lucide="flame" class="w-6 h-6 text-green-500"></i></div>
+            <h3 class="text-lg font-bold tracking-tight mb-3">Weight Loss</h3>
+            <p class="text-sm font-light text-neutral-500 leading-relaxed mb-5">Burn fat effectively with customized workout plans and nutrition guidance.</p>
+            <ul class="space-y-2">
+              <li class="flex items-center gap-2 text-xs text-neutral-400"><i data-lucide="check" class="w-3.5 h-3.5 text-green-500"></i>Custom Diet Plan</li>
+              <li class="flex items-center gap-2 text-xs text-neutral-400"><i data-lucide="check" class="w-3.5 h-3.5 text-green-500"></i>HIIT Workouts</li>
+              <li class="flex items-center gap-2 text-xs text-neutral-400"><i data-lucide="check" class="w-3.5 h-3.5 text-green-500"></i>Progress Tracking</li>
+            </ul>
+          </div>
+        </div>
+        <div class="program-card relative bg-neutral-900/40 border border-white/5 rounded-2xl p-7 card-hover observer-hidden overflow-hidden" data-observe style="transition-delay:0.1s;">
+          <div class="relative z-10">
+            <div class="w-14 h-14 rounded-2xl bg-blue-600/10 border border-blue-500/20 flex items-center justify-center mb-6"><i data-lucide="trending-up" class="w-6 h-6 text-blue-500"></i></div>
+            <h3 class="text-lg font-bold tracking-tight mb-3">Weight Gain</h3>
+            <p class="text-sm font-light text-neutral-500 leading-relaxed mb-5">Healthy weight gain with calorie-surplus meal plans and strength training.</p>
+            <ul class="space-y-2">
+              <li class="flex items-center gap-2 text-xs text-neutral-400"><i data-lucide="check" class="w-3.5 h-3.5 text-blue-500"></i>Calorie Surplus Plan</li>
+              <li class="flex items-center gap-2 text-xs text-neutral-400"><i data-lucide="check" class="w-3.5 h-3.5 text-blue-500"></i>Strength Training</li>
+              <li class="flex items-center gap-2 text-xs text-neutral-400"><i data-lucide="check" class="w-3.5 h-3.5 text-blue-500"></i>Weekly Check-ins</li>
+            </ul>
+          </div>
+        </div>
+        <div class="program-card relative bg-neutral-900/40 border border-white/5 rounded-2xl p-7 card-hover observer-hidden overflow-hidden" data-observe style="transition-delay:0.2s;">
+          <div class="relative z-10">
+            <div class="w-14 h-14 rounded-2xl bg-amber-600/10 border border-amber-500/20 flex items-center justify-center mb-6"><i data-lucide="zap" class="w-6 h-6 text-amber-500"></i></div>
+            <h3 class="text-lg font-bold tracking-tight mb-3">Fat Loss</h3>
+            <p class="text-sm font-light text-neutral-500 leading-relaxed mb-5">Target stubborn fat with advanced metabolic training and nutrition strategies.</p>
+            <ul class="space-y-2">
+              <li class="flex items-center gap-2 text-xs text-neutral-400"><i data-lucide="check" class="w-3.5 h-3.5 text-amber-500"></i>Metabolic Training</li>
+              <li class="flex items-center gap-2 text-xs text-neutral-400"><i data-lucide="check" class="w-3.5 h-3.5 text-amber-500"></i>Macro Planning</li>
+              <li class="flex items-center gap-2 text-xs text-neutral-400"><i data-lucide="check" class="w-3.5 h-3.5 text-amber-500"></i>Body Analysis</li>
+            </ul>
+          </div>
+        </div>
+        <div class="program-card relative bg-neutral-900/40 border border-white/5 rounded-2xl p-7 card-hover observer-hidden overflow-hidden" data-observe style="transition-delay:0.3s;">
+          <div class="relative z-10">
+            <div class="w-14 h-14 rounded-2xl bg-purple-600/10 border border-purple-500/20 flex items-center justify-center mb-6"><i data-lucide="dumbbell" class="w-6 h-6 text-purple-500"></i></div>
+            <h3 class="text-lg font-bold tracking-tight mb-3">Muscle Building</h3>
+            <p class="text-sm font-light text-neutral-500 leading-relaxed mb-5">Build lean muscle with progressive overload and protein-optimized diets.</p>
+            <ul class="space-y-2">
+              <li class="flex items-center gap-2 text-xs text-neutral-400"><i data-lucide="check" class="w-3.5 h-3.5 text-purple-500"></i>Progressive Overload</li>
+              <li class="flex items-center gap-2 text-xs text-neutral-400"><i data-lucide="check" class="w-3.5 h-3.5 text-purple-500"></i>Split Routine</li>
+              <li class="flex items-center gap-2 text-xs text-neutral-400"><i data-lucide="check" class="w-3.5 h-3.5 text-purple-500"></i>Supplement Guide</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ========== BMI & BMR CALCULATORS ========== -->
+  <section id="calculators" class="py-32 relative bg-[#030303]">
+    <div class="absolute inset-0 bg-gradient-to-b from-transparent via-green-950/5 to-transparent"></div>
+    <div class="absolute top-40 left-0 w-80 h-80 bg-green-600/5 rounded-full blur-[120px]"></div>
+    <div class="absolute bottom-40 right-0 w-96 h-96 bg-blue-600/5 rounded-full blur-[120px]"></div>
+
+    <div class="max-w-7xl mx-auto px-6 relative">
+      <div class="text-center mb-16 observer-hidden" data-observe>
+        <span class="text-xs font-semibold tracking-widest uppercase text-green-500/70">Fitness Tools</span>
+        <h2 class="text-3xl md:text-5xl font-bold tracking-tight mt-4">Know Your <span class="text-gradient">Numbers</span></h2>
+        <p class="text-base font-light text-neutral-500 mt-4 max-w-xl mx-auto">Understanding your body metrics is the first step. Calculate your BMI and BMR to set realistic goals.</p>
+      </div>
+
+      <div class="grid lg:grid-cols-2 gap-8">
+
+        <!-- ===== BMI CALCULATOR ===== -->
+        <div class="bg-neutral-900/40 border border-white/5 rounded-2xl p-8 observer-hidden" data-observe>
+          <div class="flex items-center gap-3 mb-2">
+            <div class="w-10 h-10 rounded-xl bg-green-600/10 border border-green-500/20 flex items-center justify-center">
+              <i data-lucide="scale" class="w-5 h-5 text-green-500"></i>
+            </div>
+            <div>
+              <h3 class="text-lg font-bold">BMI Calculator</h3>
+              <p class="text-xs text-neutral-600">Body Mass Index</p>
+            </div>
+          </div>
+          <p class="text-sm font-light text-neutral-500 mt-3 mb-6">Enter your height and weight to find out if you're underweight, normal, overweight, or obese.</p>
+
+          <form id="bmiForm" class="space-y-4">
+            <div>
+              <label class="text-xs font-medium text-neutral-500 uppercase tracking-wider block mb-2">Height (cm)</label>
+              <input type="number" id="bmiHeight" required min="50" max="300" placeholder="e.g. 175" class="calc-input w-full rounded-xl px-4 py-3 text-sm text-white placeholder:text-neutral-700" />
+            </div>
+            <div>
+              <label class="text-xs font-medium text-neutral-500 uppercase tracking-wider block mb-2">Weight (kg)</label>
+              <input type="number" id="bmiWeight" required min="10" max="500" placeholder="e.g. 70" class="calc-input w-full rounded-xl px-4 py-3 text-sm text-white placeholder:text-neutral-700" />
+            </div>
+            <button type="submit" class="w-full btn-primary text-black text-sm font-bold py-3.5 rounded-xl uppercase tracking-wide flex items-center justify-center gap-2">
+              <i data-lucide="calculator" class="w-4 h-4"></i> Calculate BMI
+            </button>
+          </form>
+
+          <!-- BMI Result -->
+          <div id="bmiResult" class="result-panel">
+            <div class="bg-neutral-800/40 border border-white/5 rounded-xl p-6">
+              <div class="flex items-center justify-between mb-5">
+                <div>
+                  <div class="text-xs text-neutral-600 uppercase tracking-wider">Your BMI</div>
+                  <div class="text-4xl font-black mt-1" id="bmiValue">--</div>
+                </div>
+                <div class="text-right">
+                  <div id="bmiCategoryBadge" class="text-xs font-bold px-3 py-1.5 rounded-full">--</div>
+                  <div class="text-xs text-neutral-600 mt-2" id="bmiRange">--</div>
+                </div>
+              </div>
+
+              <!-- Visual bar -->
+              <div class="relative mt-4 mb-2">
+                <div class="bmi-bar"></div>
+                <div class="bmi-marker" id="bmiMarker" style="left: 0%;"></div>
+              </div>
+              <div class="flex justify-between text-[10px] text-neutral-600 mt-3">
+                <span>Underweight<br/>&lt;18.5</span>
+                <span>Normal<br/>18.5–24.9</span>
+                <span>Overweight<br/>25–29.9</span>
+                <span>Obese<br/>≥30</span>
+              </div>
+
+              <div class="mt-5 pt-4 border-t border-white/5">
+                <p class="text-xs text-neutral-500 leading-relaxed" id="bmiAdvice">--</p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- ===== BMR CALCULATOR ===== -->
+        <div class="bg-neutral-900/40 border border-white/5 rounded-2xl p-8 observer-hidden" data-observe style="transition-delay:0.15s;">
+          <div class="flex items-center gap-3 mb-2">
+            <div class="w-10 h-10 rounded-xl bg-blue-600/10 border border-blue-500/20 flex items-center justify-center">
+              <i data-lucide="flame-kindling" class="w-5 h-5 text-blue-500"></i>
+            </div>
+            <div>
+              <h3 class="text-lg font-bold">BMR Calculator</h3>
+              <p class="text-xs text-neutral-600">Basal Metabolic Rate</p>
+            </div>
+          </div>
+          <p class="text-sm font-light text-neutral-500 mt-3 mb-6">Find out how many calories your body burns at rest. Uses the Mifflin-St Jeor equation.</p>
+
+          <form id="bmrForm" class="space-y-4">
+            <!-- Gender -->
+            <div>
+              <label class="text-xs font-medium text-neutral-500 uppercase tracking-wider block mb-2">Gender</label>
+              <div class="grid grid-cols-2 gap-3">
+                <label class="radio-option flex items-center gap-3 bg-neutral-800/30 border border-white/5 rounded-xl px-4 py-3">
+                  <input type="radio" name="gender" value="male" required class="hidden" />
+                  <div class="radio-dot w-4 h-4 rounded-full border-2 border-neutral-600 flex-shrink-0 transition-all"></div>
+                  <span class="text-sm text-neutral-300">Male</span>
+                </label>
+                <label class="radio-option flex items-center gap-3 bg-neutral-800/30 border border-white/5 rounded-xl px-4 py-3">
+                  <input type="radio" name="gender" value="female" required class="hidden" />
+                  <div class="radio-dot w-4 h-4 rounded-full border-2 border-neutral-600 flex-shrink-0 transition-all"></div>
+                  <span class="text-sm text-neutral-300">Female</span>
+                </label>
+              </div>
+            </div>
+            <div class="grid grid-cols-2 gap-4">
+              <div>
+                <label class="text-xs font-medium text-neutral-500 uppercase tracking-wider block mb-2">Age</label>
+                <input type="number" id="bmrAge" required min="10" max="120" placeholder="e.g. 25" class="calc-input w-full rounded-xl px-4 py-3 text-sm text-white placeholder:text-neutral-700" />
+              </div>
+              <div>
+                <label class="text-xs font-medium text-neutral-500 uppercase tracking-wider block mb-2">Height (cm)</label>
+                <input type="number" id="bmrHeight" required min="50" max="300" placeholder="e.g. 175" class="calc-input w-full rounded-xl px-4 py-3 text-sm text-white placeholder:text-neutral-700" />
+              </div>
+            </div>
+            <div>
+              <label class="text-xs font-medium text-neutral-500 uppercase tracking-wider block mb-2">Weight (kg)</label>
+              <input type="number" id="bmrWeight" required min="10" max="500" placeholder="e.g. 70" class="calc-input w-full rounded-xl px-4 py-3 text-sm text-white placeholder:text-neutral-700" />
+            </div>
+            <!-- Activity Level -->
+            <div>
+              <label class="text-xs font-medium text-neutral-500 uppercase tracking-wider block mb-2">Activity Level</label>
+              <select id="bmrActivity" class="calc-input w-full rounded-xl px-4 py-3 text-sm text-white appearance-none cursor-pointer">
+                <option value="1.2" class="bg-neutral-900">Sedentary (little or no exercise)</option>
+                <option value="1.375" class="bg-neutral-900">Lightly active (1–3 days/week)</option>
+                <option value="1.55" class="bg-neutral-900" selected>Moderately active (3–5 days/week)</option>
+                <option value="1.725" class="bg-neutral-900">Very active (6–7 days/week)</option>
+                <option value="1.9" class="bg-neutral-900">Extra active (athlete/physical job)</option>
+              </select>
+            </div>
+            <button type="submit" class="w-full bg-gradient-to-r from-blue-600 to-indigo-600 text-white text-sm font-bold py-3.5 rounded-xl uppercase tracking-wide flex items-center justify-center gap-2 hover:shadow-lg hover:shadow-blue-600/20 hover:-translate-y-0.5 transition-all duration-300">
+              <i data-lucide="calculator" class="w-4 h-4"></i> Calculate BMR
+            </button>
+          </form>
+
+          <!-- BMR Result -->
+          <div id="bmrResult" class="result-panel">
+            <div class="bg-neutral-800/40 border border-white/5 rounded-xl p-6">
+              <div class="grid grid-cols-2 gap-6 mb-5">
+                <div>
+                  <div class="text-xs text-neutral-600 uppercase tracking-wider">Basal Metabolic Rate</div>
+                  <div class="text-3xl font-black mt-1 text-blue-400" id="bmrValue">--</div>
+                  <div class="text-xs text-neutral-600 mt-1">cal/day (at rest)</div>
+                </div>
+                <div>
+                  <div class="text-xs text-neutral-600 uppercase tracking-wider">Daily Calories</div>
+                  <div class="text-3xl font-black mt-1 text-gradient" id="tdeeValue">--</div>
+                  <div class="text-xs text-neutral-600 mt-1">cal/day (with activity)</div>
+                </div>
+              </div>
+
+              <!-- Calorie breakdown -->
+              <div class="grid grid-cols-3 gap-3 mb-5">
+                <div class="bg-neutral-900/60 rounded-lg p-3 text-center">
+                  <div class="text-xs text-neutral-600 mb-1">Weight Loss</div>
+                  <div class="text-sm font-bold text-red-400" id="lossCal">--</div>
+                  <div class="text-[10px] text-neutral-700">cal/day</div>
+                </div>
+                <div class="bg-neutral-900/60 rounded-lg p-3 text-center border border-green-500/10">
+                  <div class="text-xs text-neutral-600 mb-1">Maintain</div>
+                  <div class="text-sm font-bold text-green-400" id="maintainCal">--</div>
+                  <div class="text-[10px] text-neutral-700">cal/day</div>
+                </div>
+                <div class="bg-neutral-900/60 rounded-lg p-3 text-center">
+                  <div class="text-xs text-neutral-600 mb-1">Weight Gain</div>
+                  <div class="text-sm font-bold text-blue-400" id="gainCal">--</div>
+                  <div class="text-[10px] text-neutral-700">cal/day</div>
+                </div>
+              </div>
+
+              <div class="pt-4 border-t border-white/5">
+                <p class="text-xs text-neutral-500 leading-relaxed" id="bmrAdvice">--</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ========== WHY CHOOSE US ========== -->
+  <section id="why-us" class="py-32 relative brick-texture">
+    <div class="absolute inset-0 bg-gradient-to-b from-[#050505] via-transparent to-[#050505]"></div>
+    <div class="max-w-7xl mx-auto px-6 relative">
+      <div class="text-center mb-16 observer-hidden" data-observe>
+        <span class="text-xs font-semibold tracking-widest uppercase text-green-500/70">Why Raise And Rep</span>
+        <h2 class="text-3xl md:text-5xl font-bold tracking-tight mt-4">What Sets Us <span class="text-gradient">Apart</span></h2>
+      </div>
+      <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+        <div class="bg-neutral-900/30 border border-white/5 rounded-2xl p-7 card-hover observer-hidden" data-observe>
+          <div class="w-10 h-10 rounded-xl bg-green-600/10 flex items-center justify-center mb-5"><i data-lucide="video" class="w-5 h-5 text-green-500"></i></div>
+          <h3 class="text-base font-bold mb-2">100% Online Coaching</h3>
+          <p class="text-sm font-light text-neutral-500 leading-relaxed">Train from anywhere with live sessions, video demos, and real-time form corrections.</p>
+        </div>
+        <div class="bg-neutral-900/30 border border-white/5 rounded-2xl p-7 card-hover observer-hidden" data-observe style="transition-delay:0.1s;">
+          <div class="w-10 h-10 rounded-xl bg-green-600/10 flex items-center justify-center mb-5"><i data-lucide="user-check" class="w-5 h-5 text-green-500"></i></div>
+          <h3 class="text-base font-bold mb-2">Personalized Plans</h3>
+          <p class="text-sm font-light text-neutral-500 leading-relaxed">Every workout and diet plan is custom-built based on your body type and goals.</p>
+        </div>
+        <div class="bg-neutral-900/30 border border-white/5 rounded-2xl p-7 card-hover observer-hidden" data-observe style="transition-delay:0.2s;">
+          <div class="w-10 h-10 rounded-xl bg-green-600/10 flex items-center justify-center mb-5"><i data-lucide="salad" class="w-5 h-5 text-green-500"></i></div>
+          <h3 class="text-base font-bold mb-2">Nutrition Guidance</h3>
+          <p class="text-sm font-light text-neutral-500 leading-relaxed">Complete meal plans with macro breakdowns, recipes, and flexible eating strategies.</p>
+        </div>
+        <div class="bg-neutral-900/30 border border-white/5 rounded-2xl p-7 card-hover observer-hidden" data-observe style="transition-delay:0.1s;">
+          <div class="w-10 h-10 rounded-xl bg-green-600/10 flex items-center justify-center mb-5"><i data-lucide="line-chart" class="w-5 h-5 text-green-500"></i></div>
+          <h3 class="text-base font-bold mb-2">Progress Tracking</h3>
+          <p class="text-sm font-light text-neutral-500 leading-relaxed">Regular assessments, body measurements, and performance logs to keep you accountable.</p>
+        </div>
+        <div class="bg-neutral-900/30 border border-white/5 rounded-2xl p-7 card-hover observer-hidden" data-observe style="transition-delay:0.2s;">
+          <div class="w-10 h-10 rounded-xl bg-green-600/10 flex items-center justify-center mb-5"><i data-lucide="headphones" class="w-5 h-5 text-green-500"></i></div>
+          <h3 class="text-base font-bold mb-2">24/7 Support</h3>
+          <p class="text-sm font-light text-neutral-500 leading-relaxed">Direct access to your coach via chat for queries, doubts, or motivation anytime.</p>
+        </div>
+        <div class="bg-neutral-900/30 border border-white/5 rounded-2xl p-7 card-hover observer-hidden" data-observe style="transition-delay:0.3s;">
+          <div class="w-10 h-10 rounded-xl bg-green-600/10 flex items-center justify-center mb-5"><i data-lucide="wallet" class="w-5 h-5 text-green-500"></i></div>
+          <h3 class="text-base font-bold mb-2">Affordable Pricing</h3>
+          <p class="text-sm font-light text-neutral-500 leading-relaxed">Premium coaching at prices that won't break the bank. Special discounts for early members.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ========== OFFER BANNER ========== -->
+  <section id="offer" class="py-24 relative overflow-hidden">
+    <div class="absolute inset-0 offer-shimmer"></div>
+    <div class="absolute inset-0 bg-gradient-to-r from-green-950/20 via-transparent to-green-950/20"></div>
+    <div class="max-w-7xl mx-auto px-6 relative">
+      <div class="relative bg-neutral-900/50 border-2 border-yellow-500/20 rounded-3xl p-10 md:p-16 text-center observer-hidden" data-observe>
+        <div class="absolute top-4 left-4 w-8 h-8 border-t-2 border-l-2 border-yellow-500/30 rounded-tl-lg"></div>
+        <div class="absolute top-4 right-4 w-8 h-8 border-t-2 border-r-2 border-yellow-500/30 rounded-tr-lg"></div>
+        <div class="absolute bottom-4 left-4 w-8 h-8 border-b-2 border-l-2 border-yellow-500/30 rounded-bl-lg"></div>
+        <div class="absolute bottom-4 right-4 w-8 h-8 border-b-2 border-r-2 border-yellow-500/30 rounded-br-lg"></div>
+        <div class="inline-flex items-center gap-2 bg-yellow-500/10 border border-yellow-500/20 rounded-full px-5 py-2 mb-6">
+          <i data-lucide="sparkles" class="w-4 h-4 text-yellow-500"></i>
+          <span class="text-xs font-bold tracking-widest uppercase text-yellow-400">Limited Time Offer</span>
+        </div>
+        <h2 class="text-4xl md:text-6xl lg:text-7xl font-black tracking-tighter leading-none">
+          <span class="text-gradient-gold">50% OFF</span>
+        </h2>
+        <p class="text-lg md:text-xl font-light text-neutral-300 mt-4 max-w-lg mx-auto">
+          For the <span class="text-white font-semibold">first 50 members</span> only. Don't miss this chance to transform at half the price.
+        </p>
+        <div class="flex justify-center gap-4 mt-8">
+          <div class="bg-neutral-800/60 rounded-xl px-5 py-3 text-center min-w-[70px]">
+            <div class="text-2xl font-bold text-yellow-400" id="countSpots">50</div>
+            <div class="text-[10px] text-neutral-600 uppercase tracking-wider mt-1">Spots Left</div>
+          </div>
+          <div class="bg-neutral-800/60 rounded-xl px-5 py-3 text-center min-w-[70px]">
+            <div class="text-2xl font-bold text-green-400">50%</div>
+            <div class="text-[10px] text-neutral-600 uppercase tracking-wider mt-1">Discount</div>
+          </div>
+          <div class="bg-neutral-800/60 rounded-xl px-5 py-3 text-center min-w-[70px]">
+            <div class="text-2xl font-bold text-white">∞</div>
+            <div class="text-[10px] text-neutral-600 uppercase tracking-wider mt-1">Results</div>
+          </div>
+        </div>
+        <a href="#register" class="inline-flex items-center gap-2 btn-primary text-black text-sm font-bold px-10 py-4 rounded-full uppercase tracking-wide mt-10">
+          Claim Your Spot <i data-lucide="arrow-right" class="w-4 h-4"></i>
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ========== REGISTER SECTION ========== -->
+  <section id="register" class="py-32 relative">
+    <div class="absolute inset-0 bg-gradient-to-b from-transparent via-green-950/5 to-transparent"></div>
+    <div class="absolute top-20 right-0 w-96 h-96 bg-green-600/5 rounded-full blur-[120px]"></div>
+    <div class="max-w-7xl mx-auto px-6 relative">
+      <div class="grid lg:grid-cols-2 gap-16 items-center">
+        <div class="observer-hidden" data-observe>
+          <span class="text-xs font-semibold tracking-widest uppercase text-green-500/70">Get Started</span>
+          <h2 class="text-3xl md:text-5xl font-bold tracking-tight mt-4 leading-tight">Register <span class="text-gradient">Now</span><br/>Transform Your Body</h2>
+          <p class="text-base font-light text-neutral-500 mt-6 leading-relaxed max-w-md">Fill out the form and our team will reach out within 24 hours to discuss your goals and get you started.</p>
+          <div class="mt-8 space-y-5">
+            <div class="flex items-center gap-4">
+              <div class="w-10 h-10 rounded-xl bg-green-600/10 border border-green-500/20 flex items-center justify-center flex-shrink-0"><i data-lucide="phone" class="w-4 h-4 text-green-500"></i></div>
+              <div>
+                <div class="text-xs text-neutral-600 uppercase tracking-wider">Call Us</div>
+                <a href="tel:+916369749124" class="text-sm text-neutral-300 hover:text-white transition-colors font-medium">+91 6369749124</a>
+              </div>
+            </div>
+            <div class="flex items-center gap-4">
+              <div class="w-10 h-10 rounded-xl bg-green-600/10 border border-green-500/20 flex items-center justify-center flex-shrink-0"><i data-lucide="mail" class="w-4 h-4 text-green-500"></i></div>
+              <div>
+                <div class="text-xs text-neutral-600 uppercase tracking-wider">Email</div>
+                <a href="mailto:melshiv2@gmail.com" class="text-sm text-neutral-300 hover:text-white transition-colors font-medium">melshiv2@gmail.com</a>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="observer-hidden" data-observe style="transition-delay:0.2s;">
+          <form id="registerForm" class="bg-neutral-900/40 border border-white/5 rounded-2xl p-8 space-y-5">
+            <div>
+              <label class="text-xs font-medium text-neutral-500 uppercase tracking-wider block mb-2">Full Name</label>
+              <input type="text" required placeholder="Enter your name" class="calc-input w-full rounded-xl px-4 py-3 text-sm text-white placeholder:text-neutral-700" />
+            </div>
+            <div>
+              <label class="text-xs font-medium text-neutral-500 uppercase tracking-wider block mb-2">Phone Number</label>
+              <input type="tel" required placeholder="+91 XXXXX XXXXX" class="calc-input w-full rounded-xl px-4 py-3 text-sm text-white placeholder:text-neutral-700" />
+            </div>
+            <div>
+              <label class="text-xs font-medium text-neutral-500 uppercase tracking-wider block mb-2">Email</label>
+              <input type="email" required placeholder="your@email.com" class="calc-input w-full rounded-xl px-4 py-3 text-sm text-white placeholder:text-neutral-700" />
+            </div>
+            <div>
+              <label class="text-xs font-medium text-neutral-500 uppercase tracking-wider block mb-2">Select Program</label>
+              <select required class="calc-input w-full rounded-xl px-4 py-3 text-sm text-white appearance-none cursor-pointer">
+                <option value="" class="bg-neutral-900">Choose your program</option>
+                <option value="weight-loss" class="bg-neutral-900">Weight Loss</option>
+                <option value="weight-gain" class="bg-neutral-900">Weight Gain</option>
+                <option value="fat-loss" class="bg-neutral-900">Fat Loss</option>
+                <option value="muscle-building" class="bg-neutral-900">Muscle Building</option>
+              </select>
+            </div>
+            <div>
+              <label class="text-xs font-medium text-neutral-500 uppercase tracking-wider block mb-2">Your Goal (Optional)</label>
+              <textarea rows="3" placeholder="Tell us about your fitness goals..." class="calc-input w-full rounded-xl px-4 py-3 text-sm text-white placeholder:text-neutral-700 resize-none"></textarea>
+            </div>
+            <button type="submit" class="w-full btn-primary text-black text-sm font-bold py-4 rounded-xl uppercase tracking-wide flex items-center justify-center gap-2">
+              <i data-lucide="send" class="w-4 h-4"></i> Register Now
+            </button>
+            <div id="formSuccess" class="hidden text-center py-3 bg-green-500/10 border border-green-500/20 rounded-xl">
+              <p class="text-sm text-green-400 font-medium flex items-center justify-center gap-2">
+                <i data-lucide="check-circle" class="w-4 h-4"></i>
+                Registered successfully! We'll contact you soon.
+              </p>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ========== CTA BAND ========== -->
+  <section class="py-20 relative bg-[#030303] border-y border-white/5">
+    <div class="max-w-7xl mx-auto px-6 text-center observer-hidden" data-observe>
+      <h2 class="text-2xl md:text-4xl font-bold tracking-tight">Start Today. <span class="text-gradient">Shape Your Body</span> With Us.</h2>
+      <p class="text-neutral-500 mt-4 text-sm md:text-base font-light max-w-md mx-auto">Your transformation is one decision away. Join Raise and Rep — the only fitness family you'll ever need.</p>
+      <div class="flex flex-wrap justify-center gap-4 mt-8">
+        <a href="tel:+916369749124" class="inline-flex items-center gap-2 btn-primary text-black text-sm font-bold px-8 py-3.5 rounded-full">
+          <i data-lucide="phone" class="w-4 h-4"></i> Call Now
+        </a>
+        <a href="https://wa.me/916369749124" target="_blank" class="inline-flex items-center gap-2 text-sm font-medium text-neutral-300 border border-white/10 px-8 py-3.5 rounded-full hover:border-green-500/30 hover:text-white transition-all duration-300">
+          <svg class="w-4 h-4" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+          WhatsApp
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ========== FOOTER ========== -->
+  <footer class="py-12 border-t border-white/5">
+    <div class="max-w-7xl mx-auto px-6">
+      <div class="grid md:grid-cols-3 gap-10 items-start">
+        <div>
+          <div class="flex items-center gap-3 mb-4">
+            <img src="https://z-cdn-media.chatglm.cn/files/198de31a-56c5-4fcc-89bc-9503590dfd6b.png?auth_key=1875040675-c5451e1efb164813b0068e78b15112ec-0-aac451e069bd805be81a03067b1988c7" alt="Logo" class="h-8 w-auto logo-glow rounded" />
+            <span class="text-base font-bold tracking-tight"><span class="text-gradient">RAISE</span> <span class="text-neutral-500">&</span> <span class="text-gradient">REP</span></span>
+          </div>
+          <p class="text-sm font-light text-neutral-600 leading-relaxed max-w-xs">Start today — shape your body with us. Online fitness coaching & training programs for everyone.</p>
+        </div>
+        <div>
+          <h4 class="text-xs font-semibold tracking-widest uppercase text-neutral-500 mb-4">Programs</h4>
+          <ul class="space-y-2">
+            <li><a href="#programs" class="text-sm text-neutral-600 hover:text-white transition-colors">Weight Loss</a></li>
+            <li><a href="#programs" class="text-sm text-neutral-600 hover:text-white transition-colors">Weight Gain</a></li>
+            <li><a href="#programs" class="text-sm text-neutral-600 hover:text-white transition-colors">Fat Loss</a></li>
+            <li><a href="#programs" class="text-sm text-neutral-600 hover:text-white transition-colors">Muscle Building</a></li>
+          </ul>
+        </div>
+        <div>
+          <h4 class="text-xs font-semibold tracking-widest uppercase text-neutral-500 mb-4">Contact</h4>
+          <ul class="space-y-3">
+            <li class="flex items-center gap-3 text-sm text-neutral-600"><i data-lucide="phone" class="w-4 h-4 text-green-600/50"></i><a href="tel:+916369749124" class="hover:text-white transition-colors">+91 6369749124</a></li>
+            <li class="flex items-center gap-3 text-sm text-neutral-600"><i data-lucide="mail" class="w-4 h-4 text-green-600/50"></i><a href="mailto:melshiv2@gmail.com" class="hover:text-white transition-colors">melshiv2@gmail.com</a></li>
+          </ul>
+        </div>
+      </div>
+      <div class="mt-10 pt-8 border-t border-white/5 flex flex-col md:flex-row items-center justify-between gap-4">
+        <p class="text-xs text-neutral-700">© 2025 Raise And Rep. All rights reserved.</p>
+        <p class="text-xs text-neutral-700 flex items-center gap-1.5">Built with <i data-lucide="heart" class="w-3 h-3 text-green-600/50"></i> for fitness</p>
+      </div>
+    </div>
+  </footer>
+
+  <!-- ========== SCRIPTS ========== -->
+  <script>
+    lucide.createIcons();
+
+    // Mobile Menu
+    const mobileMenuBtn = document.getElementById('mobileMenuBtn');
+    const mobileMenu = document.getElementById('mobileMenu');
+    let menuOpen = false;
+    mobileMenuBtn.addEventListener('click', () => { menuOpen = !menuOpen; mobileMenu.classList.toggle('hidden', !menuOpen); });
+    document.querySelectorAll('.mobile-link').forEach(l => l.addEventListener('click', () => { menuOpen = false; mobileMenu.classList.add('hidden'); }));
+
+    // Intersection Observer
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(e => { if (e.isIntersecting) { e.target.classList.remove('observer-hidden'); e.target.classList.add('observer-visible'); observer.unobserve(e.target); } });
+    }, { rootMargin: '0px 0px -80px 0px', threshold: 0.1 });
+    document.querySelectorAll('[data-observe]').forEach(el => observer.observe(el));
+
+    // Nav scroll
+    const nav = document.querySelector('nav');
+    window.addEventListener('scroll', () => {
+      nav.classList.toggle('border-white/10', window.scrollY > 50);
+      nav.classList.toggle('border-white/5', window.scrollY <= 50);
+    });
+
+    // ===== BMI CALCULATOR =====
+    document.getElementById('bmiForm').addEventListener('submit', function(e) {
+      e.preventDefault();
+      const height = parseFloat(document.getElementById('bmiHeight').value) / 100; // m
+      const weight = parseFloat(document.getElementById('bmiWeight').value);
+      if (!height || !weight || height <= 0 || weight <= 0) return;
+
+      const bmi = weight / (height * height);
+      const bmiRound = bmi.toFixed(1);
+
+      // Category
+      let cat, color, bg, advice;
+      if (bmi < 18.5) {
+        cat = 'Underweight'; color = '#3b82f6'; bg = 'rgba(59,130,246,0.15)';
+        advice = 'You are underweight. A calorie-surplus diet with strength training can help you gain healthy weight. Consider joining our Weight Gain program for personalized guidance.';
+      } else if (bmi < 25) {
+        cat = 'Normal Weight'; color = '#22c55e'; bg = 'rgba(34,197,94,0.15)';
+        advice = 'Great job! You are in the healthy range. Focus on maintaining your weight with balanced nutrition and regular exercise. Our Muscle Building program can help you get even stronger.';
+      } else if (bmi < 30) {
+        cat = 'Overweight'; color = '#f59e0b'; bg = 'rgba(245,158,11,0.15)';
+        advice = 'You are slightly above the healthy range. A combination of calorie deficit and regular cardio + strength training can help. Our Weight Loss program is designed exactly for this.';
+      } else {
+        cat = 'Obese'; color = '#ef4444'; bg = 'rgba(239,68,68,0.15)';
+        advice = 'Your BMI indicates obesity. It\'s important to take action now. Our Fat Loss program provides structured guidance with nutrition plans and progressive workouts to transform your health.';
+      }
+
+      document.getElementById('bmiValue').textContent = bmiRound;
+      document.getElementById('bmiValue').style.color = color;
+
+      const badge = document.getElementById('bmiCategoryBadge');
+      badge.textContent = cat;
+      badge.style.color = color;
+      badge.style.background = bg;
+      badge.style.border = `1px solid ${color}33`;
+
+      document.getElementById('bmiRange').textContent = `Range: ${cat === 'Underweight' ? '< 18.5' : cat === 'Normal Weight' ? '18.5 – 24.9' : cat === 'Overweight' ? '25 – 29.9' : '≥ 30'}`;
+      document.getElementById('bmiAdvice').textContent = advice;
+
+      // Marker position (BMI 15–40 mapped to 0–100%)
+      const clampedBmi = Math.max(15, Math.min(40, bmi));
+      const pct = ((clampedBmi - 15) / 25) * 100;
+      document.getElementById('bmiMarker').style.left = pct + '%';
+
+      document.getElementById('bmiResult').classList.add('show');
+    });
+
+    // ===== BMR CALCULATOR =====
+    document.getElementById('bmrForm').addEventListener('submit', function(e) {
+      e.preventDefault();
+      const gender = document.querySelector('input[name="gender"]:checked')?.value;
+      const age = parseFloat(document.getElementById('bmrAge').value);
+      const height = parseFloat(document.getElementById('bmrHeight').value);
+      const weight = parseFloat(document.getElementById('bmrWeight').value);
+      const activity = parseFloat(document.getElementById('bmrActivity').value);
+
+      if (!gender || !age || !height || !weight) return;
+
+      // Mifflin-St Jeor
+      let bmr;
+      if (gender === 'male') {
+        bmr = (10 * weight) + (6.25 * height) - (5 * age) + 5;
+      } else {
+        bmr = (10 * weight) + (6.25 * height) - (5 * age) - 161;
+      }
+
+      const tdee = bmr * activity;
+      const lossCal = Math.round(tdee - 500);
+      const maintainCal = Math.round(tdee);
+      const gainCal = Math.round(tdee + 500);
+
+      document.getElementById('bmrValue').textContent = Math.round(bmr).toLocaleString();
+      document.getElementById('tdeeValue').textContent = Math.round(tdee).toLocaleString();
+      document.getElementById('lossCal').textContent = lossCal.toLocaleString();
+      document.getElementById('maintainCal').textContent = maintainCal.toLocaleString();
+      document.getElementById('gainCal').textContent = gainCal.toLocaleString();
+
+      let advice = `Based on the Mifflin-St Jeor equation, your body burns approximately ${Math.round(bmr).toLocaleString()} calories per day at complete rest. `;
+      advice += `With your current activity level, you need about ${Math.round(tdee).toLocaleString()} calories daily to maintain your weight. `;
+      advice += `To lose weight safely, aim for ~${lossCal.toLocaleString()} cal/day (500 cal deficit). To gain weight, target ~${gainCal.toLocaleString()} cal/day (500 cal surplus). `;
+      advice += `Join our programs for a precise plan tailored to these numbers!`;
+
+      document.getElementById('bmrAdvice').textContent = advice;
+      document.getElementById('bmrResult').classList.add('show');
+    });
+
+    // Registration form
+    const regForm = document.getElementById('registerForm');
+    const formSuccess = document.getElementById('formSuccess');
+    regForm.addEventListener('submit', (e) => {
+      e.preventDefault();
+      const btn = regForm.querySelector('button[type="submit"]');
+      btn.innerHTML = '<svg class="animate-spin w-5 h-5" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="10" stroke="currentColor" stroke-width="3" stroke-dasharray="31.4 31.4" stroke-linecap="round"/></svg> Submitting...';
+      btn.disabled = true;
+      setTimeout(() => { btn.classList.add('hidden'); formSuccess.classList.remove('hidden'); lucide.createIcons(); }, 1500);
+    });
+
+    // Spots counter
+    let spots = 50;
+    const spotsEl = document.getElementById('countSpots');
+    function decrementSpot() {
+      if (spots > 12) { spots--; spotsEl.textContent = spots; spotsEl.style.animation = 'none'; spotsEl.offsetHeight; spotsEl.style.animation = 'countUp 0.6s ease-out'; }
+      setTimeout(decrementSpot, 15000 + Math.random() * 25000);
+    }
+    setTimeout(decrementSpot, 20000);
+  </script>
+</body>
+</html>
